@@ -4,6 +4,8 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn import svm
 from sklearn.metrics import accuracy_score
+import pyttsx3
+engine = pyttsx3.init()
 df = pd.read_csv('diabetes.csv')
 X = df.drop(columns = 'Outcome', axis = 1)
 Y = df['Outcome']
@@ -19,7 +21,7 @@ from tkinter import *
 root = Tk()
 root.geometry("676x380")
 root.resizable(0,0)
-title = root.title('DIABETES PREDICTOR')
+title = root.title('DIABETES PREDICTION AI MODEL')
 img = PhotoImage(file="iconn.png")
 root.iconphoto(False,img)
 bg = PhotoImage(file = "dp4.png")
@@ -40,9 +42,20 @@ def submit_command():
     std_data = scaler.transform(input_data_reshaped)
     prediction = classifier.predict(std_data)
     if(prediction[0] == 0):
+        voices = engine.getProperty('voices')      
+        engine.setProperty('voice', voices[0].id) 
+        engine.say("YOU ARE NOT DIABETIC")
+        engine.runAndWait()
+        engine.stop()
+
         predict_label.config(text="YOU ARE NOT DIABETIC",fg='green')
     else:
-        predict_label.config(text="YOU ARE DIABETIC",fg='red')
+         voices = engine.getProperty('voices')      
+         engine.setProperty('voice', voices[1].id) 
+         engine.say("YOU ARE DIABETIC")
+         engine.runAndWait()
+         engine.stop()
+         predict_label.config(text="YOU ARE DIABETIC",fg='red')
 
 def clear_command():
     field1.delete(0, END)
@@ -56,19 +69,19 @@ def clear_command():
     predict_label.config(text="ENTER THE ABOVE DETAILS",fg='gray')
     field1.focus_set()
 
-label1 = Label(root, text = "PREGNENCIES",fg = 'grey', bg = 'black',font=('helvetica',8))
+label1 = Label(root, text = "No. of PREGNENCIES",fg = 'grey', bg = 'black',font=('helvetica',8))
 label1.place(x=35,y=20)
 field1 = Entry(root)
 field1.place(x=200,y=20)
-label2 = Label(root, text = "GLUCOSE",fg = 'grey', bg = 'black',font=('helvetica',8))
+label2 = Label(root, text = "GLUCOSE  (mg/dL)",fg = 'grey', bg = 'black',font=('helvetica',8))
 label2.place(x=35,y=45)
 field2 = Entry(root)
 field2.place(x=200,y=45)
-label3 = Label(root, text = "BLOOD PRESSURE",fg = 'grey', bg = 'black',font=('helvetica',8))
+label3 = Label(root, text = "BLOOD PRESSURE (mmHg)",fg = 'grey', bg = 'black',font=('helvetica',8))
 label3.place(x=35,y=70)
 field3 = Entry(root)
 field3.place(x=200,y=70)
-label4 = Label(root, text = "SKIN THICKNESS",fg = 'grey', bg = 'black',font=('helvetica',8))
+label4 = Label(root, text = "SKIN THICKNESS (mm)",fg = 'grey', bg = 'black',font=('helvetica',8))
 label4.place(x=35,y=95)
 field4 = Entry(root)
 field4.place(x=200,y=95)
